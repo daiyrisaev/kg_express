@@ -2,7 +2,7 @@ import json
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import SubCategory,Category, Product
+from .models import SubCategory,Category, Product,BannerImage
 from django.views.generic import (TemplateView,
                                   ListView,
                                   DetailView)
@@ -18,12 +18,31 @@ def get_subcategory(request):
 class IndexPage(TemplateView):
     template_name = "index.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        baners = BannerImage.objects.all()
+        if len(baners) > 6:
+            baners = baners[:6]
+            context['banner'] = baners
+            return context
+
 
 class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
-    context_object_name = 'products'
-    queryset = Product.objects.filter(is_active=True)
+    paginate_by = 2
+
+    def get_queryset(self):
+        print(self.kwargs)
+        category_slug = self.kwargs.get('slug')
+        subcategory_slug = self.kwargs.get('subcategory_slug')
+        if subcategory_slug:
+            products = Product.objects.filter(is_active=True, subcategory__slug=subcategory_slug)
+        elif category_slug:
+            products = Product.objects.filter(is_active=True, category__slug=category_slug)
+        else:
+            products = Product.objects.filter(is_active=True)
+        return products
 
 
 class ProductDetailView(DetailView):

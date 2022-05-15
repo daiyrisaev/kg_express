@@ -86,3 +86,20 @@ class Review(models.Model):
 
         def __str__(self):
             return f'{self.id}'
+
+
+class BannerImage(models.Model):
+    image = models.ImageField(upload_to="banners/")
+    add_link = models.URLField()
+    name = models.CharField('название', max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Картинка для банера'
+        verbose_name_plural = 'Картинки для банера'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name
+

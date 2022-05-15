@@ -20,3 +20,8 @@ class SubCategory(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'image', 'category', 'subcategory', 'created', 'updated', 'price']
 
+
+@admin.register(BannerImage)
+class BannerImageAdmin(admin.ModelAdmin):
+    list_display = ['name','add_link','image','created_at','updated']
+    list_filter = ['created_at']
