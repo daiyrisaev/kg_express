@@ -1,9 +1,12 @@
 from django.shortcuts import render,redirect
-from django.views.generic import (FormView, CreateView,TemplateView)
+from django.views.generic import (FormView, CreateView,TemplateView,UpdateView)
 from django.contrib.auth import login,authenticate,logout
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from .forms import LoginForm,UserRegisterForm
+from .forms import UserUpdateForm
+from .models import User
+from django.contrib.auth.mixins import UserPassesTestMixin,LoginRequiredMixin
 
 
 class LoginView(FormView):
@@ -42,4 +45,13 @@ def user_logout(request):
     return redirect('index')
 
 
+class UserUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    form_class = UserUpdateForm
+    template_name = "user_update.html"
+    success_url = reverse_lazy("index")
+    queryset = User.objects.all()
 
+    def test_func(self):
+        if self.kwargs.get('pk') == self.request.user.pk:
+            return True
+        return False

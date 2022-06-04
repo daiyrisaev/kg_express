@@ -1,5 +1,18 @@
 from django.contrib import admin
 from .models import *
+from ckeditor.widgets import CKEditorWidget
+from .models import *
+from django.forms import ModelForm,CharField
+
+from django.forms import ModelForm, CharField, widgets
+
+
+class ProductAdminForm(ModelForm):
+    description = CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = Product
+        fields = '__all__'
 
 
 @admin.register(Category)

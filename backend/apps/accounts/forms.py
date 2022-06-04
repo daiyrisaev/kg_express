@@ -48,4 +48,22 @@ class UserRegisterForm(UserCreationForm):
             "phone": forms.TextInput(attrs={"class": "form-control"}),
 
         }
-#
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "middle_name",
+            "phone",
+            "avatar"
+        ]
+        widgets = {
+            "first_name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
+            "middle_name": forms.TextInput(attrs={"class": "form-control"}),
+            "phone": forms.TextInput(attrs={"class": "form-control"}),
+            "avatar": forms.FileInput(attrs={"class": "form-control"})
+        }

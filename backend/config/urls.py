@@ -17,9 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('api/',include('backend.apps.api.urls')),
     path('admin/', admin.site.urls),
+    path('ckeditor/',include('ckeditor_uploader.urls')),
     path('', include('backend.apps.product.urls')),
     path('accounts/', include('backend.apps.accounts.urls')),
+    path('cart/',include('backend.apps.cart.urls')),
+    path('order/',include('backend.apps.order.urls')),
+
 
 ]
 
